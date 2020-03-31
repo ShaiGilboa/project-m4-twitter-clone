@@ -1,4 +1,4 @@
-# Twitter project
+# Twitter project 
 
 This project asks you to create a Twitter clone, "Critter":
 
