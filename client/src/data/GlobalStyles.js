@@ -36,8 +36,9 @@ export default createGlobalStyle`
     padding: 0;
     border: 0;
     vertical-align: baseline;
-    display: flex;
-    flex-direction: row;
+    /*trying to have the sidebar on the side*/
+      display: flex;
+      flex-direction: row;
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
