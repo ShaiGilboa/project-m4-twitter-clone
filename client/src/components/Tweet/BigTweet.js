@@ -5,6 +5,8 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import TweetActions from './TweetActions';
+import {SmallRetweetIcon} from '../../data/ProjectIcons';
+
 
 // const propTypes = {
 //   author: PropTypes.obj.isRequired,
@@ -21,6 +23,7 @@ import TweetActions from './TweetActions';
 // };
 
 const BigTweet = ( {
+  id,
   author,
   retweetFrom,
   timestamp,
@@ -30,12 +33,19 @@ const BigTweet = ( {
   numRetweets,
   status,
   media,
-  // handleToggleLike,
-  // handleToggleRetweet,
+  toggleLikeTweet,
+  toggleRetweet,
 }) => {
+  React.useEffect(()=> {
+    fetch(`/api/tweet/${id}`)
+    .then(res=>res.json())
+    .then(tweet=>console.log('tweet',tweet))
+  },[])
+
   const timestampFormatted = format(new Date(timestamp), "h:mm' 'a' \u00B7 'MMM do, yyyy'")
   return (
     <Wrapper>
+      {retweetFrom ? (<RetweetWrapper><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</RetweetWrapper>) : null}
       <Header>
         <Avatar src={author.avatarSrc} />
         <Name>
@@ -47,7 +57,13 @@ const BigTweet = ( {
       {media.length ? <Media src={media[0].url} /> : null }
       <Timestamp>{timestampFormatted}</Timestamp>
       <Divider />
-      <TweetActions isLiked={isLiked} isRetweeted={isRetweeted}/>
+      <TweetActions
+            isLiked={isLiked}
+            isRetweeted={isRetweeted}
+            id={id}
+            numLikes={numLikes}
+            numRetweets={numRetweets}
+            />      
       <Divider />
     </Wrapper>
   );
@@ -65,6 +81,10 @@ const Wrapper = styled.div`
     Ubuntu, 'Helvetica Neue', sans-serif;
   flex-direction:column;
   border: solid 0 1px grey;
+`;
+
+const RetweetWrapper = styled.div`
+  flex-direction: row;
 `;
 
 const Header = styled.header`

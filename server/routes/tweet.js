@@ -143,7 +143,10 @@ router.put('/api/tweet/:tweetId/retweet', (req, res) => {
 
     const retweet = createTweet(null, { isRetweet: true });
     retweet.retweetOf = req.params.tweetId;
-
+    // Shai's addition :)
+    retweet.likedBy = [];
+    retweet.retweetedBy = [CURRENT_USER_HANDLE];
+    // console.log('retweet',retweet)
     data.tweets[retweet.id] = retweet;
   } else {
     tweet.retweetedBy = tweet.retweetedBy.filter(

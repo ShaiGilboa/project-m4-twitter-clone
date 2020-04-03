@@ -5,8 +5,14 @@ import { SmallTweet } from '../Tweet';
 
 const Feed = ({ tweetIds, tweetsById, user }) => {
 
+  const {
+    currentUserAction: {
+      toggleLikeTweet,
+      toggleRetweet,
+    }
+  } = React.useContext(CurrentUserContext);
 
-console.log('Feed')
+  // console.log('Feed')
   return (
     <>
     {tweetIds.map((tweetId) => {
@@ -22,6 +28,8 @@ console.log('Feed')
         numRetweets={thisTweet.numRetweets}
         status={thisTweet.status}
         media={thisTweet.media}
+        toggleLikeTweet={toggleLikeTweet}
+        toggleRetweet={toggleRetweet}
         />
       })
       }

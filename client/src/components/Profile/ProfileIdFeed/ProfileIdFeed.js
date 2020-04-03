@@ -27,14 +27,14 @@ const ProfileFeedBar = ({ profile, setProfile }) => {
     <>
       <ProfileIdFeedBar handle={handle} />
       {/* <Switch> */}
-        <Route path={`/${handle}/tweets`} exact>
-          <ProfileIdTweetsFeed feed={feed}/>
-        </Route>
         <Route path={`/${handle}/Media`} exact>
           <ProfileIdMediaFeed feed={feed}/>
         </Route>
         <Route path={`/${handle}/Likes`} exact>
           <ProfileIdLikesFeed feed={feed}/>
+        </Route>
+        <Route path={`/${handle}`} exact>
+          <ProfileIdTweetsFeed feed={feed}/>
         </Route>
       {/* </Switch> */}
     </>

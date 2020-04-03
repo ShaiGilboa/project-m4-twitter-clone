@@ -2,10 +2,17 @@ import React from 'react';
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom';
 
+import { CurrentUserContext } from '../CurrentUserContext';
 import { BigTweet } from '../Tweet';
 
 const TweetDetails = () => {
   const { tweetId } = useParams();
+    const {
+    currentUserAction: {
+      toggleLikeTweet,
+      toggleRetweet,
+    }
+  } = React.useContext(CurrentUserContext);
   let [thisTweet, setThisTweet] = React.useState(null);
   React.useEffect(() => {
     fetch(`/api/tweet/${tweetId}`)
@@ -25,6 +32,8 @@ const TweetDetails = () => {
         numRetweets={thisTweet.numRetweets}
         status={thisTweet.status}
         media={thisTweet.media}
+        toggleLikeTweet={toggleLikeTweet}
+        toggleRetweet={toggleRetweet}
       /> : 
       <div>loading</div>}
     </Wrapper>

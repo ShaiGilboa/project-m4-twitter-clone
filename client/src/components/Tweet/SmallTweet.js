@@ -20,8 +20,8 @@ const SmallTweet = ( {
   numRetweets,
   status,
   media,
-  // handleToggleLike,
-  // handleToggleRetweet,
+  toggleLikeTweet,
+  toggleRetweet,
 }) => {
 
   const handleClick = (target) => {
@@ -33,9 +33,9 @@ const SmallTweet = ( {
   let history = useHistory();
   const timestampFormatted = ' \u00B7 ' + format(new Date(timestamp), 'MMM do');
   return (
-    <Wrapper>
+    <Wrapper onClick={()=>history.push(`/tweet/${id}`)}>
         {retweetFrom ? (<><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</>) : null}
-      <Header onClick={()=>history.push(`/tweet/${id}`)}>
+      <Header>
         <Avatar src={author.avatarSrc} />
         <Info>
           <Name>
@@ -48,7 +48,13 @@ const SmallTweet = ( {
           </TweetContents>
         </Info>
       </Header>
-          <TweetActions isLiked={isLiked} isRetweeted={isRetweeted} onClick={(event)=>event.stopPropagation()}/>
+          <TweetActions
+            isLiked={isLiked}
+            isRetweeted={isRetweeted}
+            id={id}
+            numLikes={numLikes}
+            numRetweets={numRetweets}
+            />
     </Wrapper>
   );
 }
