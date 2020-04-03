@@ -23,10 +23,8 @@ const ProfileFeedBar = ({ profile, setProfile }) => {
       .then(res=>setFeed(res))
   },[])
   return(
-    // <Router>
     <>
       <ProfileIdFeedBar handle={handle} />
-      {/* <Switch> */}
         <Route path={`/${handle}/Media`} exact>
           <ProfileIdMediaFeed feed={feed}/>
         </Route>
@@ -36,9 +34,7 @@ const ProfileFeedBar = ({ profile, setProfile }) => {
         <Route path={`/${handle}`} exact>
           <ProfileIdTweetsFeed feed={feed}/>
         </Route>
-      {/* </Switch> */}
     </>
-    // </Router>
   );
 }
 

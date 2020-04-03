@@ -8,13 +8,13 @@ import Particles from '../Particles';
 
 const LikeButton = ({ isLiked, size = 40 }) => {
   const heartSize = size * 0.6;
-  const [likeAnimation, setLikeAnimation] = React.useState(false)
-  React.useEffect(() => {
-    setLikeAnimation(!likeAnimation);
-  },[isLiked])
+  // const [likeAnimation, setLikeAnimation] = React.useState(false)
+  // React.useEffect(() => {
+  //   setLikeAnimation(!likeAnimation);
+  // },[isLiked])
   return (
     <Wrapper style={{ width: size, height: size }}>
-      {likeAnimation ? (
+      {isLiked ? (
         <>
           {/* <PoppingCircle size={size} color={'#E790F7'} /> */}
           <ScaleIn>

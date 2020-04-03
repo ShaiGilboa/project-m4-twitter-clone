@@ -23,38 +23,45 @@ const SmallTweet = ( {
   toggleLikeTweet,
   toggleRetweet,
 }) => {
-
-  const handleClick = (target) => {
-
-  }
-  // console.log('smallTweet', status)
-  // console.log('retweet', isRetweeted)
-  // console.log('retweetFrom',retweetFrom)
   let history = useHistory();
   const timestampFormatted = ' \u00B7 ' + format(new Date(timestamp), 'MMM do');
+  console.log('smallTweet', {
+    id,
+  author,
+  retweetFrom,
+  timestamp,
+  isLiked,
+  isRetweeted,
+  numLikes,
+  numRetweets,
+  status,
+  media,
+  toggleLikeTweet,
+  toggleRetweet,
+  });
   return (
     <Wrapper onClick={()=>history.push(`/tweet/${id}`)}>
-        {retweetFrom ? (<><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</>) : null}
-      <Header>
-        <Avatar src={author.avatarSrc} />
-        <Info>
-          <Name>
-            <DisplayName onClick={(event)=>{event.stopPropagation();history.push(`/${author.handle}`)}}>{author.displayName}</DisplayName>
-            <Username>@{author.handle}</Username>
-            <Timestamp>{timestampFormatted}</Timestamp>
-          </Name>
-          <TweetContents>{status}
-          {media.length ? <Media src={media[0].url} /> : null }
-          </TweetContents>
-        </Info>
-      </Header>
-          <TweetActions
-            isLiked={isLiked}
-            isRetweeted={isRetweeted}
-            id={id}
-            numLikes={numLikes}
-            numRetweets={numRetweets}
-            />
+      {retweetFrom ? (<><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</>) : null}
+    <Header>
+      <Avatar src={author.avatarSrc} />
+      <Info>
+        <Name>
+          <DisplayName onClick={(event)=>{event.stopPropagation();history.push(`/${author.handle}`)}}>{author.displayName}</DisplayName>
+          <Username>@{author.handle}</Username>
+          <Timestamp>{timestampFormatted}</Timestamp>
+        </Name>
+        <TweetContents>{status}
+        {media.length ? <Media src={media[0].url} /> : null }
+        </TweetContents>
+      </Info>
+    </Header>
+        <TweetActions
+          isLiked={isLiked}
+          isRetweeted={isRetweeted}
+          id={id}
+          numLikes={numLikes}
+          numRetweets={numRetweets}
+          />
     </Wrapper>
   );
 }

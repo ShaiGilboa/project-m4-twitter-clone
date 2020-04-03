@@ -67,7 +67,6 @@ const CurrentUserProvider = ({children}) => {
     let newCurrentUserHomeFeed = JSON.parse(JSON.stringify(currentUserState.currentUserHomeFeed));
     console.log('feed: ', newCurrentUserHomeFeed)
     console.log('id',tweetId);
-    
     let thisTweet = newCurrentUserHomeFeed.tweetsById[tweetId];
     console.log('thisTweet', thisTweet)
     switch (action.type) {
@@ -84,11 +83,20 @@ const CurrentUserProvider = ({children}) => {
         newCurrentUserHomeFeed.tweetsById[action.tweet.id] = newTweet;
         return newCurrentUserHomeFeed;
       case 'like':
-        newCurrentUserHomeFeed[action.tweetId] = thisTweet;
-        console.log('postLike',thisTweet)
+        thisTweet = {
+          ...thisTweet,
+          numLikes: thisTweet.isLiked ? thisTweet.numLiked - 1 : thisTweet.numLikes + 1,
+          isLiked: !thisTweet.isLiked,
+        }
+        newCurrentUserHomeFeed.tweetsById[tweetId] = thisTweet;
         return newCurrentUserHomeFeed;
       case 'retweet':
-        newCurrentUserHomeFeed[action.tweetId] = thisTweet;
+        thisTweet = {
+          ...thisTweet,
+          numRetweets: thisTweet.isRetweeted ? thisTweet.numRetweets - 1 : thisTweet.numRetweets + 1,
+          isRetweeted: !thisTweet.isRetweeted,
+        }
+        newCurrentUserHomeFeed.tweetsById[tweetId] = thisTweet;
         return newCurrentUserHomeFeed;
     }
   }
@@ -104,6 +112,7 @@ const CurrentUserProvider = ({children}) => {
 
   const newTweet = (tweet) => {
     const newFeed = changeOneTweet(null, {type: 'newTweet', tweet})
+    console.log('feed',currentUserState)
     dispatch({type: 'NEW_FEED', newFeed})
   }
 
@@ -113,6 +122,8 @@ const CurrentUserProvider = ({children}) => {
 
   const toggleLikeTweet = (tweetId) => {
     console.log('likeId',tweetId)
+    console.log('feed',currentUserState)
+
     const newFeed = changeOneTweet(tweetId, {type: 'like'})
     dispatch({type: "NEW_FEED", newFeed})
   }

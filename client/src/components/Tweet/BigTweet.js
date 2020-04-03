@@ -41,6 +41,20 @@ const BigTweet = ( {
     .then(res=>res.json())
     .then(tweet=>console.log('tweet',tweet))
   },[])
+  console.log('bigTweet', {
+    id,
+  author,
+  retweetFrom,
+  timestamp,
+  isLiked,
+  isRetweeted,
+  numLikes,
+  numRetweets,
+  status,
+  media,
+  toggleLikeTweet,
+  toggleRetweet,
+  });
 
   const timestampFormatted = format(new Date(timestamp), "h:mm' 'a' \u00B7 'MMM do, yyyy'")
   return (

@@ -8,6 +8,11 @@ import { BigTweet } from '../Tweet';
 const TweetDetails = () => {
   const { tweetId } = useParams();
     const {
+      currentUserState: {
+        currentUserHomeFeed: {
+          tweetsById,
+        },
+      },
     currentUserAction: {
       toggleLikeTweet,
       toggleRetweet,
@@ -15,9 +20,10 @@ const TweetDetails = () => {
   } = React.useContext(CurrentUserContext);
   let [thisTweet, setThisTweet] = React.useState(null);
   React.useEffect(() => {
-    fetch(`/api/tweet/${tweetId}`)
-      .then(res=>res.json())
-      .then(res=>{setThisTweet(res.tweet)})
+    // fetch(`/api/tweet/${tweetId}`)
+    //   .then(res=>res.json())
+    //   .then(res=>{console.log('thieTweet',res.tweet);setThisTweet(res.tweet)})
+    setThisTweet(tweetsById[tweetId])
   },[])
   return (
     <Wrapper>
