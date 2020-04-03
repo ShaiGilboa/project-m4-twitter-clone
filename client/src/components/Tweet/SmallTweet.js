@@ -25,20 +25,20 @@ const SmallTweet = ( {
 }) => {
   let history = useHistory();
   const timestampFormatted = ' \u00B7 ' + format(new Date(timestamp), 'MMM do');
-  console.log('smallTweet', {
-    id,
-  author,
-  retweetFrom,
-  timestamp,
-  isLiked,
-  isRetweeted,
-  numLikes,
-  numRetweets,
-  status,
-  media,
-  toggleLikeTweet,
-  toggleRetweet,
-  });
+  // console.log('smallTweet', {
+  //   id,
+  // author,
+  // retweetFrom,
+  // timestamp,
+  // isLiked,
+  // isRetweeted,
+  // numLikes,
+  // numRetweets,
+  // status,
+  // media,
+  // toggleLikeTweet,
+  // toggleRetweet,
+  // });
   return (
     <Wrapper onClick={()=>history.push(`/tweet/${id}`)}>
       {retweetFrom ? (<><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</>) : null}
