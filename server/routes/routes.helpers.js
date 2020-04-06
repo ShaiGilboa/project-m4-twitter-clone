@@ -4,7 +4,8 @@ const data = require('../data');
 const CURRENT_USER_HANDLE = 'treasurymog';
 
 const MAX_DELAY = 2000;
-const FAILURE_ODDS = 0.00000000005;
+// const FAILURE_ODDS = 0.2;
+const FAILURE_ODDS = 0.00000000000001;
 
 // Our server is very lean and quick, given that it doens't actually connect
 // to a database or deal with any sort of scale!
@@ -82,7 +83,6 @@ const denormalizeTweet = tweet => {
 
   delete tweetCopy.likedBy;
   delete tweetCopy.retweetedBy;
-  console.log('tweet',tweet)
   tweetCopy.isLiked = tweet.likedBy.includes(CURRENT_USER_HANDLE);
   tweetCopy.isRetweeted = tweet.retweetedBy.includes(CURRENT_USER_HANDLE);
   tweetCopy.numLikes = tweet.likedBy.length;

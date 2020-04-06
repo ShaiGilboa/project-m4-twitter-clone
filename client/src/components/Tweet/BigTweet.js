@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 import TweetActions from './TweetActions';
 import {SmallRetweetIcon} from '../../data/ProjectIcons';
+import { CurrentUserContext } from '../CurrentUserContext';
 
 
 // const propTypes = {
@@ -31,33 +32,17 @@ const BigTweet = ( {
   isRetweeted,
   numLikes,
   numRetweets,
-  status,
+  tweetStatus,
   media,
   toggleLikeTweet,
   toggleRetweet,
 }) => {
-  // React.useEffect(()=> {
-  //   fetch(`/api/tweet/${id}`)
-  //   .then(res=>res.json())
-  //   .then(tweet=>console.log('tweet',tweet))
-  // },[])
-  // console.log('bigTweet', {
-  //   id,
-  // author,
-  // retweetFrom,
-  // timestamp,
-  // isLiked,
-  // isRetweeted,
-  // numLikes,
-  // numRetweets,
-  // status,
-  // media,
-  // toggleLikeTweet,
-  // toggleRetweet,
-  // });
-  console.log('bigTweet - isLiked', isLiked);
-  // console.log('bigTweet - isRetweeted', isRetweeted)
 
+  const {
+    currentUserState:{
+      status,
+    },
+  } = React.useContext(CurrentUserContext);
   const timestampFormatted = format(new Date(timestamp), "h:mm' 'a' \u00B7 'MMM do, yyyy'")
   return (
     <Wrapper>
@@ -69,17 +54,17 @@ const BigTweet = ( {
           <Username>@{author.handle}</Username>
         </Name>
       </Header>
-      <TweetContents>{status}</TweetContents>
+      <TweetContents>{tweetStatus}</TweetContents>
       {media.length ? <Media src={media[0].url} /> : null }
       <Timestamp>{timestampFormatted}</Timestamp>
       <Divider />
-      <TweetActions
+      {status==='idle'?<TweetActions
             isLiked={isLiked}
             isRetweeted={isRetweeted}
             id={id}
             numLikes={numLikes}
             numRetweets={numRetweets}
-            />      
+            />   : null}   
       <Divider />
     </Wrapper>
   );
@@ -143,6 +128,8 @@ const Username = styled.div`
 const TweetContents = styled.div`
   font-size: 22px;
   padding: 16px 0;
+  max-width:60vw;
+  word-break: break-all;
 `;
 
 const Timestamp = styled.div`

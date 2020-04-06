@@ -1,18 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import LikeButton from './Buttons/LikeButton';
-import PoppingCircle from './Buttons/PoppingCircle';
 
 import Action from './Buttons/Action';
-import TweetActionIcon from './data/TweetActionIcon';
 
 import { CurrentUserContext } from '../CurrentUserContext';
 
 const TweetActions = ({isLiked, isRetweeted, numRetweets, numLikes, id}) => {
   const {
     currentUserState:{
+      currentUserState,
       currentUserHomeFeed,
       status,
     },
@@ -23,92 +21,98 @@ const TweetActions = ({isLiked, isRetweeted, numRetweets, numLikes, id}) => {
     },
   } = React.useContext(CurrentUserContext);
 
+  const [liked, setLiked] = React.useState(isLiked);
+  const [numOfLikes , setNumOfLikes] = React.useState(numLikes);
+  const [retweet, setRetweet] = React.useState(isRetweeted);
+  const [numOfRetweets , setNumOfRetweets] = React.useState(numRetweets);
+
   const handleOnClick = (event, type) => {
     event.stopPropagation();
-    // if(CurrentUserProfile===null) {
-    //   console.log('not logged on')
-    //   return
-    // }
-    setStatus('tweet-action');
+    setStatus('tweet-action');    
     switch (type){
       case 'like':
-        toggleLikeTweet(id);
+        setNumOfLikes(liked?numOfLikes-1:numOfLikes+1);
+        setLiked(!liked);
+        toggleLikeTweet(id);        
         fetch(`/api/tweet/${id}/like`, {
           method: "PUT",
-          body: JSON.stringify({like: !isLiked}),
+          body: JSON.stringify({like: !liked}),
           headers: {
             "Content-Type": "application/json",
             "Accept" : "application/json"
         },
         })
         .then(res=>res.json())
-        .then(res=>console.log(res))
+        .catch(err=>{console.log('error while liking, please refresh');
+        setStatus('error-tweet-action')
+        })
       break;
       case 'retweet':
-      toggleRetweet(id);
+        setNumOfRetweets(retweet?numOfRetweets-1:numOfRetweets+1);
+        setRetweet(!retweet);
+        toggleRetweet(id);
         fetch(`/api/tweet/${id}/retweet`, {
           method: "PUT",
-          body: JSON.stringify({retweet: !isRetweeted}),
+          body: JSON.stringify({retweet: !retweet}),
           headers: {
             "Content-Type": "application/json",
             "Accept" : "application/json"
         },
         })
         .then(res=>res.json())
-        .then(res=>console.log(res))
+        .catch(err=>{console.log('error while retweeting, please refresh');
+        setStatus('error-tweet-action');
+        })
       break;
       default:
       console.log(`unknown action: ${type}`);
-      setStatus('error');
+      // setStatus('error');
       break;
     }
   }
-  console.log('currentUserState', currentUserHomeFeed===null)
+  const loggedOn = currentUserHomeFeed ? true : false;
+
   return (
     <>
-    {currentUserHomeFeed ? (
       <Actions>
         <Action
           color="rgb(27, 149, 224)"
           size={40}
-          onClick={(event) => handleOnClick(event, 'reply')}
-        >
-          <TweetActionIcon kind="reply" />
-        </Action>
+          handle={handleOnClick}
+          kind={'reply'}
+          loggedOn={loggedOn}
+        />
 
         <Action
           color="rgb(23, 191, 99)"
           size={40}
-          onClick={(event)=>handleOnClick(event, 'retweet')}
+          handle={handleOnClick}
+          kind={'retweet'}
+          sum={numOfRetweets}
+          loggedOn={loggedOn}
         >
-          <TweetActionIcon
-            kind="retweet"
-            color={isRetweeted ? 'rgb(23, 191, 99)' : undefined}
-          />
-          {numRetweets > 0 ? numRetweets : null}
+        {/* <RetweetButton isRetweeted={isRetweeted}/> */}
         </Action>
 
         <Action
           color="rgb(224, 36, 94)"
           size={40}
-          onClick={(event)=>handleOnClick(event, 'like')}>
-          <LikeButton isLiked={isLiked} />
-          {numLikes > 0 ? numLikes : null}
+          handle={handleOnClick}
+          kind={'like'}
+          sum={numOfLikes}
+          loggedOn={loggedOn}
+        >
+        <LikeButton isLiked={liked} />
         </Action>
 
         <Action
           color="rgb(27, 149, 224)"
           size={40}
-          onClick={(event) => handleOnClick(event, 'share')}
-        >
-          <TweetActionIcon kind="share" />
-        </Action>
+          handle={handleOnClick}
+          kind={'share'}
+          loggedOn={loggedOn}
+        />
       </Actions>
-    ) : <>
-      <Link to='/' >
-        you are not logged in, do you wish to log in?
-      </Link>
-      </>}
     </>
   );
 }

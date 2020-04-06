@@ -4,4 +4,6 @@ export const COLORS = {
   primaryBG: 'hsla(258deg, 100%, 50%, 0.3)',
   greyBG: '#EDE3EA',
   greyText: 'rgb(101, 119, 134)',
+  primaryLight: 'hsl(258deg, 100%, 80%)',
+  primaryDark: 'hsl(258deg, 100%, 30%)',
 };

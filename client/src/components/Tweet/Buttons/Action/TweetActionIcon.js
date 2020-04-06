@@ -1,7 +1,6 @@
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { CurrentUserContext } from '../../CurrentUserContext';
+// import { CurrentUserContext } from '../../CurrentUserContext';
 // const {
 //   currentUserState:{
 //     status,
@@ -35,11 +34,9 @@ const PATHS = {
 }
 
 const TweetActionIcon = ({ size = 24, kind, color }) => (
-  // status==='tweet-action'? <CircularProgress size={24}/>: (
     <svg width={size} height={size} viewBox="0 0 24 24">
       {PATHS[kind]}
     </svg>
-  // )
 )
 
 export default TweetActionIcon

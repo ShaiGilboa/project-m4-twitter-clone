@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom';
+import { COLORS } from '../../data/constants';
 
 import { CurrentUserContext } from '../CurrentUserContext';
 import { BigTweet } from '../Tweet';
+import { LoadingSpinner } from '../Loading';
+import { ErrorPage } from '../Error';
+
 
 const TweetDetails = () => {
   const { tweetId } = useParams();
   const {
-    // currentUserState: {
-    //   currentUserHomeFeed: {
-    //     tweetsById,
-    //   },
-    //   status,
-    //   // },
-    // },
     currentUserState:{
       currentUserHomeFeed,
       status,
@@ -22,40 +19,29 @@ const TweetDetails = () => {
     currentUserAction: {
     toggleLikeTweet,
     toggleRetweet,
+    setStatus,
   }
   } = React.useContext(CurrentUserContext);
-  // const status=currentUserState.status;
-  let [thisTweet, setThisTweet] = React.useState(null);
-  let [liked, setLiked] = React.useState(false)
+  let [thisTweet, setThisTweet] = React.useState({});
 
-  React.useEffect(()=> {
-    setThisTweet(null);
-    // setThisTweet(currentUserHomeFeed.tweetsById[tweetId]);
-    console.log('tweetDetails useEffect');
-    
-  },[])
-
-  if(!currentUserHomeFeed===null) {
-    setThisTweet(currentUserHomeFeed.tweetsById[tweetId]);
-    console.log('if');
-    
-  } else {
-    // React.useEffect(() => {
+  React.useEffect(()=>{
+    if(currentUserHomeFeed) {      
+      setThisTweet(currentUserHomeFeed.tweetsById[tweetId]);
+    } else {
       fetch(`/api/tweet/${tweetId}`)
         .then(res=>res.json())
         .then(res=>{
-          console.log('getch');
           setThisTweet(res.tweet);
           })
-    // },[status])
-  }
-  // console.log('thisTweetOutside', thisTweet)
-  // console.log('tweetsByIds', tweetsById);
-  console.log('tweetDetails');
+        .catch(err=>setStatus('error'))
+    }
+  },[])
+
+  if(status!=='idle')console.log('hi',status);
   
   return (
-    <Wrapper>
-      {(thisTweet && status==='idle') ? <BigTweet 
+    (status==='idle' ? <Wrapper>
+      {(thisTweet.id) ? <BigTweet 
         id={thisTweet.id}
         author={thisTweet.author}
         retweetFrom={thisTweet.retweetFrom}
@@ -64,18 +50,23 @@ const TweetDetails = () => {
         isRetweeted={thisTweet.isRetweeted}
         numLikes={thisTweet.numLikes}
         numRetweets={thisTweet.numRetweets}
-        status={thisTweet.status}
+        tweetStatus={thisTweet.status}
         media={thisTweet.media}
         toggleLikeTweet={toggleLikeTweet}
         toggleRetweet={toggleRetweet}
       /> : 
-      <div>loading</div>}
-    </Wrapper>
+      <div style={{width: 'fit-content', height: 'fit-content', margin: 'auto'}}>
+      <LoadingSpinner size={'big'} color={COLORS.primaryLight}/>
+      </div>}
+    </Wrapper> : <>tweet details<ErrorPage /></>
     )
+  )
 }
 
 const Wrapper = styled.div`
-  flex:2;
+  /* flex:2; */
+  width:70vw;
+  justify-content: center;
 `;
 
 export default TweetDetails;

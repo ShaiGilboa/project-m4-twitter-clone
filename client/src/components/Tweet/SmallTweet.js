@@ -1,8 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Link, useHistory } from 'react-router-dom';
+import { 
+  // Link, 
+  useHistory } from 'react-router-dom';
 
 import TweetActions from './TweetActions';
 
@@ -25,25 +27,11 @@ const SmallTweet = ( {
 }) => {
   let history = useHistory();
   const timestampFormatted = ' \u00B7 ' + format(new Date(timestamp), 'MMM do');
-  // console.log('smallTweet', {
-  //   id,
-  // author,
-  // retweetFrom,
-  // timestamp,
-  // isLiked,
-  // isRetweeted,
-  // numLikes,
-  // numRetweets,
-  // status,
-  // media,
-  // toggleLikeTweet,
-  // toggleRetweet,
-  // });
   return (
     <Wrapper onClick={()=>history.push(`/tweet/${id}`)}>
       {retweetFrom ? (<><SmallRetweetIcon /> { retweetFrom.displayName} retweeted</>) : null}
     <Header>
-      <Avatar src={author.avatarSrc} />
+      <Avatar src={author.avatarSrc} onClick={(event)=>{event.stopPropagation();history.push(`/${author.handle}`)}}/>
       <Info>
         <Name>
           <DisplayName onClick={(event)=>{event.stopPropagation();history.push(`/${author.handle}`)}}>{author.displayName}</DisplayName>
@@ -71,6 +59,8 @@ export default SmallTweet;
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  max-width:60vw;
+  overflow-wrap: break-word;
   padding-right:10px;
 `;
 
@@ -80,7 +70,7 @@ const Wrapper = styled.div`
   border-radius: 10px;
   text-decoration: none;
   background: white;
-  width: 70vw;
+  width: 67vw;
   padding: 16px;
   text-align: left;
   /* padding-bottom: 0; */
@@ -102,6 +92,9 @@ const Avatar = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  &:hover {
+    box-shadow: 0px 0px 27px -13px rgba(0,0,0,0.75);
+  }
 `;
 
 const Name = styled.div`
@@ -136,6 +129,7 @@ const TweetContents = styled.div`
   font-size: 15px;
   font-weight: 500;
   padding: 0px 16px 5px;
+  max-width:90%;
   /* padding: 16px 0; */
   /* justify-content: left; */
 `;
@@ -144,11 +138,6 @@ const Timestamp = styled.div`
   color: rgb(101, 119, 134);
   font-size: 16px;
   padding-bottom: 16px;
-`;
-
-const Divider = styled.div`
-  height: 1px;
-  background: rgb(230, 236, 240);
 `;
 
 const Media = styled.img`

@@ -6,18 +6,18 @@ import { format } from 'date-fns';
 import { COLORS } from '../../data/constants';
 import { SmallLocationIcon, SmallCalenderIcon } from '../../data/ProjectIcons';
 import ProfileIdFeed from './ProfileIdFeed';
+import { LoadingSpinner } from '../Loading';
+
 
 const Profile = () => {
   const { profileId } = useParams();
   const [profile, setProfile] = React.useState(null);
-
+  
   React.useEffect(() => {
     fetch(`/api/${profileId}/profile`)
       .then(res=>res.json())
       .then(res=>setProfile(res.profile))
   },[profileId])
-
-  console.log('profile', profile)
 
   const formattedJoinedDate = profile ? format(new Date(profile.joined), `MMMM yyyy`) : '';
   return (
@@ -57,7 +57,8 @@ const Profile = () => {
       </Info>
       <ProfileIdFeed profile={profile} setProfile={setProfile}/>
       </>
-    ) : <div>Profile</div>
+    ) : <div style={{width: 'fit-content', height: 'fit-content', margin: 'auto'}}>
+<LoadingSpinner size={'big'} color={COLORS.primaryLight}/></div>
     }
     </Wrapper>
   );
@@ -69,7 +70,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 2;
-  width: 70vw;
+  width: 68vw;
   height: fit-content;
 `;
 
@@ -137,8 +138,8 @@ const FollowingStatus = styled.button`
   background: ${COLORS.primary};
   color: white;
   border: none;
-  font-size:1rem;
-  margin-left: 0.5rem;
+  font-size:0.8rem;
+  /* margin-left: 0.5rem; */
   padding: 0.5rem 0.6rem;
   border-radius: 1.2rem; 
   height: fit-content;

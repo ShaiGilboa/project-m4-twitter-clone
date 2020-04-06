@@ -8,19 +8,20 @@ import { HomeIcon, UserIcon, BookmarksIcon, NotificationsIcon } from '../../data
 import { COLORS } from '../../data/constants';
 
 
-const Sidebar = () => {
+const Sidebar = ({profileId}) => {
+    
     return (
     <StyledHeader>
-        <Link to='/' >
+        <LogoLink to='/' >
             <StyledLogo />
-        </Link>
+        </LogoLink>
         <StyledLink to='/' exact  >
             <HomeIcon />
             <p>Home</p>
         </StyledLink>
-        <StyledLink to='/:ProfileId'>
+        <StyledLink to={`/${profileId}`}>
             <UserIcon />
-            <p>ProfileId</p>
+            <p>Profile</p>
         </StyledLink>
         <StyledLink to='/notifications'>
             <NotificationsIcon />
@@ -36,10 +37,6 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const style = {
-    fontWeight: "bold",
-    color: COLORS.primary,
-}
 const StyledLink = styled(NavLink)`
     width: fit-content;
     text-align:center;
@@ -65,12 +62,16 @@ const StyledHeader = styled.header`
     flex-direction: column;
     align-items:left;
     margin-left:2vw;
-    width:20vw;
+    width:16vw;
     height:100vh;
     a {
         text-decoration: none;
         color: #262322;
     }
+`;
+
+const LogoLink = styled(Link)`
+    width:fit-content;
 `;
 
 const StyledLogo = styled(Logo)`

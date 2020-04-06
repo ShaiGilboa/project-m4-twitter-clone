@@ -3,6 +3,9 @@ import React from 'react';
 const currentUserInitialState = {
   status: 'loading', /* - loading
                         - error
+                        - error-app
+                        - error-home
+                        - error-posting-tweet
                         - idle
                         - tweeting
                         - tweet-action
@@ -32,30 +35,11 @@ const reducer = (state, action) =>{
         currentUserHomeFeed: action.newFeed,
         status: 'idle',
       }
-    case "SET_STATUS":
+    case "SET_STATUS":      
       return {
         ...state,
         status: action.newStatus,
       }
-    // case "TOGGLE_LIKE":
-    //   let newCurrentUserHomeFeed = JSON.parse(JSON.stringify(state.currentUserHomeFeed));
-    //   const thisTweet = JSON.parse(JSON.stringify(state.currentUserHomeFeed[action.tweetId]))
-    //   thisTweet = {
-    //     ...thisTweet,
-    //     isLiked: !thisTweet.isLiked,
-    //   }
-    //   newCurrentUserHomeFeed[action.tweetId] = thisTweet;
-    //   return {
-    //     ...state,
-    //     currentUserHomeFeed: newCurrentUserHomeFeed,
-    //     status: 'idle',
-    //   }
-    // case "TOGGLE_RETWEET":
-    //   return {
-    //     ...state,
-    //     isRetweeted: !state.isRetweeted,
-    //     status: 'idle',
-    //   }
     default:
       throw new Error(`error: unknown action: ${action}`);
   }
@@ -65,10 +49,7 @@ const CurrentUserProvider = ({children}) => {
 
   const changeOneTweet = (tweetId, action) => {
     let newCurrentUserHomeFeed = JSON.parse(JSON.stringify(currentUserState.currentUserHomeFeed));
-    console.log('feed: ', newCurrentUserHomeFeed)
-    console.log('id',tweetId);
     let thisTweet = newCurrentUserHomeFeed.tweetsById[tweetId];
-    console.log('thisTweet', thisTweet)
     switch (action.type) {
       case 'newTweet':
         const newTweet = {
@@ -98,32 +79,28 @@ const CurrentUserProvider = ({children}) => {
         }
         newCurrentUserHomeFeed.tweetsById[tweetId] = thisTweet;
         return newCurrentUserHomeFeed;
+      default:
+        throw new Error (`unknown action in 'CurrentUserContext' - 'changeOneTweet':${action}`);
     }
   }
 
   const setCurrentUser = (profile) => {
-    // console.log('profile')
     dispatch({ type: 'SET_CURRENT_USER', profile })
   }
   const setCurrentUSerHomeFeed = (feed) => {
-    // console.log('feedIds');
     dispatch({type: 'SET_CURRENT_USER_HOME_FEED', feed})
   }
 
   const newTweet = (tweet) => {
     const newFeed = changeOneTweet(null, {type: 'newTweet', tweet})
-    console.log('feed',currentUserState)
     dispatch({type: 'NEW_FEED', newFeed})
   }
 
-  const setStatus = (newStatus) => {
+  const setStatus = (newStatus) => {  
     dispatch({type: "SET_STATUS", newStatus})
   }
 
   const toggleLikeTweet = (tweetId) => {
-    console.log('likeId',tweetId)
-    console.log('feed',currentUserState)
-
     const newFeed = changeOneTweet(tweetId, {type: 'like'})
     dispatch({type: "NEW_FEED", newFeed})
   }

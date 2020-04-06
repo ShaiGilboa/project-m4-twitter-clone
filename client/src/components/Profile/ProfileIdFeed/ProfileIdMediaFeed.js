@@ -1,8 +1,7 @@
 import React from 'react';
-import Styled from 'styled-components';
+// import styled from 'styled-components';
 
 const ProfileMediaFeed = ({ hanfeeddle }) => {
-  console.log('media');
   
   return (
     <>

@@ -12,7 +12,6 @@ const Feed = ({ tweetIds, tweetsById, user }) => {
     }
   } = React.useContext(CurrentUserContext);
 
-  // console.log('Feed')
   return (
     <>
     {tweetIds.map((tweetId) => {

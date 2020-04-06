@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Heart from './Heart';
-import PoppingCircle from '../PoppingCircle';
 import ScaleIn from '../ScaleIn';
-import Particles from '../Particles';
 
 const LikeButton = ({ isLiked, size = 40 }) => {
   const heartSize = size * 0.6;
@@ -16,11 +14,9 @@ const LikeButton = ({ isLiked, size = 40 }) => {
     <Wrapper style={{ width: size, height: size }}>
       {isLiked ? (
         <>
-          {/* <PoppingCircle size={size} color={'#E790F7'} /> */}
           <ScaleIn>
             <Heart width={heartSize} isToggled={isLiked} />
           </ScaleIn>
-          {/* <Particles /> */}
         </>) :
         <Heart width={heartSize} isToggled={isLiked} />
       } 
