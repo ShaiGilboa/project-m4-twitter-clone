@@ -54,7 +54,7 @@ const Wrapper = styled(UnstyledButton)`
 const Sum = styled.div`
   display:inline;
   position: relative;
-  visibility: ${props=>props.vis?'visible':'hidden'}
+  visibility: ${props=>props.vis?'visible':'hidden'};
   /* left: -1rem; */
   z-index:1;
 `;

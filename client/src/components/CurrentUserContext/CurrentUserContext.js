@@ -90,15 +90,16 @@ const CurrentUserProvider = ({children}) => {
   const setCurrentUSerHomeFeed = (feed) => {
     dispatch({type: 'SET_CURRENT_USER_HOME_FEED', feed})
   }
+  
+  const setStatus = (newStatus) => {  
+    dispatch({type: "SET_STATUS", newStatus})
+  }
 
   const newTweet = (tweet) => {
     const newFeed = changeOneTweet(null, {type: 'newTweet', tweet})
     dispatch({type: 'NEW_FEED', newFeed})
   }
 
-  const setStatus = (newStatus) => {  
-    dispatch({type: "SET_STATUS", newStatus})
-  }
 
   const toggleLikeTweet = (tweetId) => {
     const newFeed = changeOneTweet(tweetId, {type: 'like'})
